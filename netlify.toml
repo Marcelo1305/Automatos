@@ -1,0 +1,9 @@
+[build]
+  publish = "static"  # Define a pasta de publicação para Netlify
+  command = "echo 'Netlify is for static files only. Backend should be deployed separately.'" 
+
+[[redirects]]
+  from = "/*"
+  to = "https://your-backend-service.herokuapp.com/:splat"  # Redirecione para seu backend Flask no Heroku ou outro serviço
+  status = 200
+  force = true

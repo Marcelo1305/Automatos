@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autômato e Diagrama de Estados</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<style>
+    .border-image {
+        border: 2px solid black; /* Definindo uma borda preta de 2 pixels */
+        padding: 5px; /* Adicionando um preenchimento interno para a borda */
+        margin-top: 20px;
+    }
+</style>
+<body>
+    <div class="container">
+        <h1>Insira o Autômato</h1>
+        <form id="meuFormulario">
+            <div class="form-group">
+                <label for="estados">Estados (separados por vírgula):</label>
+                <input type="text" class="form-control" id="estados" name="estados" placeholder="q0,q1,q2">
+            </div>
+
+            <div class="form-group">
+                <label for="transicoes">Transições (separadas por ponto e vírgula, cada transição é do tipo estado_atual,simbolo,proximo_estado):</label>
+                <textarea class="form-control" id="transicoes" name="transicoes" rows="3" placeholder="(q0, a, q1),(q1, b, q2)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="estado_inicial">Estado Inicial:</label>
+                <input type="text" class="form-control" id="estado_inicial" name="estado_inicial" placeholder="q0">
+            </div>
+
+            <div class="form-group">
+                <label for="estados_finais">Estados Finais (separados por vírgula):</label>
+                <input type="text" class="form-control" id="estados_finais" name="estados_finais" placeholder="q2,q3">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Gerar Diagrama</button>
+        </form>
+
+        <div id="imagemContainer"></div>
+    </div>
+
+    <!-- Bootstrap JS (opcional, apenas se você estiver usando componentes JavaScript do Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js" integrity="sha384-fzL5Y1AQxVo2KKV9tofG0L+JGoPkSZ8kCfGDc5gBsyN5Zl/R/GQ8f8+rfs1SH8nv" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shCk+5KVcJIoSkx3mIh5/wwj1u6Z6wuKI6Yah" crossorigin="anonymous"></script>
+
+    <script>
+        document.getElementById('meuFormulario').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio do formulário
+            const formData = new FormData(this); // Cria um objeto FormData com os dados do formulário
+            console.log(formData); // Exibe o objeto FormData no console
+            
+            // Faz a requisição com o método fetch
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // Converte a resposta para texto
+            .then(data => {
+                const imagemContainer = document.getElementById('imagemContainer'); // Insere a imagem na div
+                imagemContainer.innerHTML = ''; // Limpa a div
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = data.imagem_path + '?t=' + new Date().getTime(); // Adiciona um parâmetro de consulta único
+                imgElement.alt = 'Diagrama de Estados';
+                imgElement.classList.add('img-fluid', 'border-image');
+
+                imagemContainer.appendChild(imgElement);
+            })
+            .catch(error => console.error('Erro:', error)); // Trata erros
+        });
+    </script>
+</body>
+</html>

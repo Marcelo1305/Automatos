@@ -1,0 +1,5 @@
+
+.border-image {
+    border: 2px solid black; /* Definindo uma borda preta de 2 pixels */
+    padding: 5px; /* Adicionando um preenchimento interno para a borda */
+}
