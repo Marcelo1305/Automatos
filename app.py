@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import graphviz
+import ast
 
 app = Flask(__name__)
 
@@ -25,14 +26,7 @@ def criar_diagrama_de_estados(estados, transicoes, estado_inicial, estados_finai
 def index():
     if request.method == 'POST':
         estados = request.form['estados'].split(',')
-        # Processando as transições
-        transicoes_str = request.form['transicoes']
-        transicoes_str = transicoes_str.replace(' ', '')  # Remover espaços em branco
-        transicoes_str = transicoes_str.replace('),(', '|')  # Substituir ),( por | para dividir corretamente
-        transicoes_str = transicoes_str.replace('(', '')  # Remover parênteses
-        transicoes_str = transicoes_str.replace(')', '')  # Remover parênteses
-        transicoes = [t.strip().split(',') for t in transicoes_str.split('|')]  # Dividir por |
-
+        transicoes = ast.literal_eval(request.form['transicoes'])
         estado_inicial = request.form['estado_inicial']
         estados_finais = request.form['estados_finais'].split(',')
 
@@ -48,4 +42,4 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 
-#(q0, a, q1),(q1, b, q2),(q2, a, q3), (q3, b, q0),(q3, c, q1)
+#[("q0", "a", "q1"),("q1", "b", "q2"),("q2", "a", "q3"), ("q3", "b", "q0"),("q3", "c", "q1")]
